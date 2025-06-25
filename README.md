@@ -1,13 +1,13 @@
-# analyzuj_shelly_csv.py
+# analyzuj_homeassistant_wattmeter_csv.py
 
-## 📊 Analýza spotřeby energie ze Shelly 3EM – Python nástroj
+## 📊 Analýza spotřeby energie z chytrého wattmetru Shelly 3EM nebo jiného 1F wattmetru
 
-Tento skript umožňuje analyzovat elektrickou spotřebu **třífázového zařízení** (např. čerpadla) ze souboru CSV exportovaného z Home Assistanta nebo zařízení Shelly Pro 3EM.
+Tento skript umožňuje analyzovat elektrickou spotřebu **třífázového nebo jednofázového zařízení** (např. čerpadla) ze souboru CSV exportovaného z Home Assistanta. Testováno pro 3F elektroměr Shelly Pro 3EM a 1F elektroměr Solight.
 
 Provádí výpočet energie na základě měřeného **okamžitého výkonu (W)** v čase pro:
 
 * celkový výkon (`total_active_power`)
-* jednotlivé fáze: `phase_a_active_power`, `phase_b_active_power`, `phase_c_active_power`
+* jednotlivé fáze: `phase_a_active_power`, `phase_b_active_power`, `phase_c_active_power` pro 3F měřák
 
 ---
 
@@ -18,7 +18,7 @@ Výpočet energie se provádí **diskrétní integrací metodou step hold**:
 * Každý vzorek výkonu se považuje za konstantní až do následujícího vzorku.
 * Energie se spočítá podle vzorce:
 
-```
+```text
 E = výkon × čas = P × Δt  → převedeno na Wh = (P × Δt) / 3600
 ```
 
@@ -48,19 +48,19 @@ sensor.shellypro3em_XXXX_phase_a_active_power,1432.1,2025-06-19T04:00:01.000Z
 
 ### 🧰 Použití
 
-#### ✅ Spuštění:
+#### ✅ Spuštění
 
 ```bash
-python3 analyzuj_shelly_csv.py path/to/history.csv
+python3 analyzuj_homeassistant_wattmeter_csv.py path/to/history.csv
 ```
 
 nebo jen:
 
 ```bash
-python3 analyzuj_shelly_csv.py
+python3 analyzuj_homeassistant_wattmeter_csv.py
 ```
 
-*(otevře GUI dialog pro výběr souboru)*
+otevře GUI dialog pro výběr souboru
 
 ---
 
@@ -103,7 +103,7 @@ pip install pandas matplotlib
 * Skript se dá přeložit pomocí `pyinstaller` do `.exe`:
 
 ```bash
-pyinstaller --onefile analyzuj_shelly_csv.py
+pyinstaller --onefile analyzuj_homeassistant_wattmeter_csv.py
 ```
 
 * Lze jej pak používat přetažením CSV souboru na ikonu.
