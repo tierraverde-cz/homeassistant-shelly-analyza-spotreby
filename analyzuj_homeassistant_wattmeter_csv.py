@@ -45,7 +45,7 @@ df['state'] = pd.to_numeric(df['state'], errors='coerce')
 df = df.dropna(subset=['state']).sort_values('last_changed')
 
 # === Detekce typu zařízení ===
-valid_suffixes = ["_power"]  # jen měření výkonu, ignorujeme napětí, proudy atd.
+valid_suffixes = ["_power", "_napajeni"]  # jen měření výkonu, ignorujeme napětí, proudy atd.
 
 # Filtrovat na řádky s relevantním suffixem
 df = df[df['entity_id'].apply(lambda eid: any(eid.endswith(suf) for suf in valid_suffixes))]
