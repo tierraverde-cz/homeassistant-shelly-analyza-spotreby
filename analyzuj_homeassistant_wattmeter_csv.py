@@ -41,6 +41,9 @@ df = df[['entity_id', 'state', 'last_changed']]
 
 # Konverze typů
 df['last_changed'] = pd.to_datetime(df['last_changed'])
+# Nejprve načti 'state' jako string, abychom mohli manipulovat s čárkou
+df['state'] = df['state'].astype(str).str.replace(',', '.', regex=False)
+# Až poté převedeme na čísla
 df['state'] = pd.to_numeric(df['state'], errors='coerce')
 df = df.dropna(subset=['state']).sort_values('last_changed')
 

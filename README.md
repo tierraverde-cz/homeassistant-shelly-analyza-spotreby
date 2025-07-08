@@ -11,6 +11,13 @@ Provádí výpočet energie na základě měřeného **okamžitého výkonu (W)*
 
 ---
 
+### Changelog
+
+2025-06-23: Chyba je v tom, že pd.to_numeric(..., errors='coerce') neumí číst čísla s čárkou jako desetinným oddělovačem – chápe je jako string a převede na NaN. Starý dataset z 8/2024 má čárky, nový dataset tečky
+
+2025-07-08: opraveno aby skript bral čárky i tečky jako oddělovače
+
+
 ### ⚙️ Jak to funguje
 
 Výpočet energie se provádí **diskrétní integrací metodou step hold**:
