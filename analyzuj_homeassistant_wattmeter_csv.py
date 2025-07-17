@@ -168,7 +168,7 @@ if not is_singlephase:
 
 plt.xlabel("Čas (UTC)")
 plt.ylabel("Výkon [W]")
-plt.title("Spotřeba na 1F elektroměru" if is_singlephase else "Spotřeba na 3F elektroměru")
+plt.title("Spotřeba na elektroměru" if is_singlephase else "Spotřeba na 3F elektroměru")
 plt.legend()
 plt.grid(True)
 plt.xticks(rotation=45)
