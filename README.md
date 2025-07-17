@@ -17,6 +17,7 @@ Provádí výpočet energie na základě měřeného **okamžitého výkonu (W)*
 
 2025-07-08: opraveno aby skript bral čárky i tečky jako oddělovače
 
+2025-07-17: oprava kritické chyby bug dat z HA kdy poslední řádek je aktuální timestamp, naprosto zkresluje historická data kde jsou hodinové průměry.
 
 ### ⚙️ Jak to funguje
 

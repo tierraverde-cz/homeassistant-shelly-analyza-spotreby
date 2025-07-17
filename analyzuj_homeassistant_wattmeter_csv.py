@@ -41,6 +41,32 @@ df = df[['entity_id', 'state', 'last_changed']]
 
 # Konverze typů
 df['last_changed'] = pd.to_datetime(df['last_changed'])
+
+# --- Kontrola posledního řádku ---
+if len(df) >= 2:
+    last_ts = df['last_changed'].iloc[-1]
+    prev_ts = df['last_changed'].iloc[-2]
+    # pokud je rozdíl větší než 2 hodiny (pro hodinové průměry)
+    if (last_ts - prev_ts).total_seconds() > 7200:
+        # uložíme info o odstraněném řádku
+        bad_row = df.iloc[-1]
+        warning_msg = (
+            f"⚠️ Poslední řádek CSV je podezřelý a bude ignorován:\n"
+            f"entity_id={bad_row['entity_id']}, state={bad_row['state']}, last_changed={bad_row['last_changed'].isoformat()}\n"
+            f"Rozdíl od předchozího řádku: {(last_ts - prev_ts)}"
+        )
+        print(warning_msg)
+
+        # uložíme warning do samostatné proměnné pro pozdější zápis do TXT
+        ignored_row_info = warning_msg
+
+        # odřízneme poslední řádek
+        df = df.iloc[:-1]
+    else:
+        ignored_row_info = None
+else:
+    ignored_row_info = None
+
 # Nejprve načti 'state' jako string, abychom mohli manipulovat s čárkou
 df['state'] = df['state'].astype(str).str.replace(',', '.', regex=False)
 # Až poté převedeme na čísla
@@ -126,6 +152,8 @@ with open(output_txt, "w", encoding="utf-8") as f:
         f.write(f"Spotřeba fáze A: {phase_a_kwh:.3f} kWh\n")
         f.write(f"Spotřeba fáze B: {phase_b_kwh:.3f} kWh\n")
         f.write(f"Spotřeba fáze C: {phase_c_kwh:.3f} kWh\n")
+    if ignored_row_info:
+        f.write("\n" + ignored_row_info + "\n")
 
 # === Graf
 plt.figure(figsize=(12, 5))
